@@ -6,7 +6,7 @@ import 'dart:developer';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../enums/playback_rate.dart';
 import '../enums/player_state.dart';
@@ -48,7 +48,7 @@ class YoutubePlayerValue {
   /// The current position of the video.
   final Duration position;
 
-  /// The position up to which the video is buffered.i
+  /// The position up to which the video is buffered.
   final double buffered;
 
   /// Reports true if video is playing.
@@ -72,7 +72,7 @@ class YoutubePlayerValue {
   final int errorCode;
 
   /// Reports the [WebViewController].
-  final InAppWebViewController? webViewController;
+  final WebViewController? webViewController;
 
   /// Returns true is player has errors.
   bool get hasError => errorCode != 0;
@@ -102,7 +102,7 @@ class YoutubePlayerValue {
     double? playbackRate,
     String? playbackQuality,
     int? errorCode,
-    InAppWebViewController? webViewController,
+    WebViewController? webViewController,
     bool? isDragging,
     YoutubeMetaData? metaData,
   }) {
@@ -172,7 +172,7 @@ class YoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
 
   void _callMethod(String methodString) {
     if (value.isReady) {
-      value.webViewController?.evaluateJavascript(source: methodString);
+      value.webViewController?.runJavaScript(methodString);
     } else {
       log('The controller is not ready for method calls.');
     }
@@ -315,7 +315,6 @@ class YoutubePlayerController extends ValueNotifier<YoutubePlayerValue> {
 
   @override
   void dispose() {
-    value.webViewController?.dispose();
     super.dispose();
   }
 }
